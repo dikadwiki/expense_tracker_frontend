@@ -1,4 +1,5 @@
-// src/composables/useDarkMode.js
+// src/composables/useDarkMode.js update typo
+
 import { ref, onMounted } from 'vue'
 
 export function useDarkMode() {
