@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: 'cv02','cv03','cv04','cv11';
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200;
+  }
+
+  input, textarea, select {
+    font-feature-settings: 'cv02','cv03','cv04','cv11';
+  }
+  
+  /* Dark mode configuration */
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 
+           text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-in-out 
+           shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:ring-offset-2 dark:focus:ring-offset-gray-800;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 
+           text-gray-700 dark:text-white font-medium py-2 px-4 rounded-lg 
+           border border-gray-300 dark:border-gray-600 transition-all duration-200 ease-in-out 
+           shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:ring-offset-2 dark:focus:ring-offset-gray-800;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 
+           text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-in-out 
+           shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 
+           focus:ring-offset-2 dark:focus:ring-offset-gray-800;
+  }
+
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm 
+           placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 
+           text-gray-900 dark:text-white focus:outline-none focus:ring-2 
+           focus:ring-primary-500 focus:border-primary-500 transition-all duration-200;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-white mb-2;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-soft border 
+           border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-200;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100 dark:border-gray-700 
+           bg-gray-50 dark:bg-gray-700/50;
+  }
+
+  .card-body {
+    @apply px-6 py-4;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 dark:bg-primary-900/50 text-primary-800 dark:text-primary-200;
+  }
+
+  .badge-success {
+    @apply bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200;
+  }
+
+  .badge-danger {
+    @apply bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200;
+  }
+  
+  /* Additional dark mode utilities */
+  .text-muted {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+  
+  .bg-surface {
+    @apply bg-white dark:bg-gray-800;
+  }
+  
+  .bg-surface-secondary {
+    @apply bg-gray-50 dark:bg-gray-900;
+  }
+  
+  .border-default {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+  
+  .divide-default {
+    @apply divide-gray-200 dark:divide-gray-700;
+  }
+  
+  /* Override default text colors in dark mode using CSS variables */
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #ffffff;
+  }
+  
+  .dark p, .dark span, .dark div {
+    color: #ffffff;
+  }
+  
+  .dark .text-gray-500 {
+    color: #9ca3af !important;
+  }
+  
+  .dark .text-gray-600 {
+    color: #d1d5db !important;
+  }
+  
+  .dark .text-gray-700 {
+    color: #e5e7eb !important;
+  }
+}
+
+@layer utilities {
+  .text-money {
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar dengan dark mode */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Loading states dengan dark mode */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.dark .loading-shimmer {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Toast notification styles dengan dark mode */
+.toast {
+  @apply p-4 rounded-lg shadow-lg border backdrop-blur-sm transition-all duration-300;
+}
+
+.toast-success {
+  @apply bg-green-50 dark:bg-green-900/50 border-green-200 dark:border-green-700 text-green-800 dark:text-green-200;
+}
+
+.toast-error {
+  @apply bg-red-50 dark:bg-red-900/50 border-red-200 dark:border-red-700 text-red-800 dark:text-red-200;
+}
+
+.toast-warning {
+  @apply bg-yellow-50 dark:bg-yellow-900/50 border-yellow-200 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200;
+}
+
+.toast-info {
+  @apply bg-blue-50 dark:bg-blue-900/50 border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-200;
+}
