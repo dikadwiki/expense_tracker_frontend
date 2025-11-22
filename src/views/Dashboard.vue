@@ -23,11 +23,11 @@
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Pengeluaran Bulan Ini -->
-        <div class="card bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.1s">
+        <div class="card bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.1s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-primary-100 text-sm font-semibold mb-1">Total Bulan Ini</p>
+                <p class="text-emerald-50 text-sm font-semibold mb-1">Total Bulan Ini</p>
                 <p class="text-3xl font-black text-money drop-shadow-lg">
                   {{ formatRupiah(ringkasan.total_bulan_ini) }}
                 </p>
@@ -74,7 +74,7 @@
         </div>
 
         <!-- Rata-rata Pengeluaran -->
-        <div class="card bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.4s">
+        <div class="card bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.4s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
@@ -83,7 +83,7 @@
                   {{ formatRupiah(ringkasan.rata_rata_per_hari) }}
                 </p>
               </div>
-              <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <CalculatorIcon class="w-7 h-7 text-white" />
               </div>
             </div>

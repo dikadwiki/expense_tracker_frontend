@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
     <!-- Background decoration -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-300 dark:bg-primary-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"></div>
-      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 dark:bg-purple-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow" style="animation-delay: 2s"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-emerald-300 dark:bg-emerald-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-300 dark:bg-cyan-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow" style="animation-delay: 2s"></div>
     </div>
     
     <div class="max-w-md w-full space-y-8 relative z-10 animate-scaleIn">
       <!-- Header -->
       <div class="animate-slideDown">
         <div class="flex justify-center mb-6">
-          <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 animate-float">
+          <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 animate-float">
             <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z" />
             </svg>
@@ -21,7 +21,7 @@
         </h2>
         <p class="text-center text-sm text-gray-600 dark:text-gray-400 font-medium">
           Atau
-          <router-link to="/register" class="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors duration-200">
+          <router-link to="/register" class="font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors duration-200">
             daftar akun baru
           </router-link>
         </p>
@@ -133,8 +133,19 @@ export default {
         const response = await authService.login(form.value.email, form.value.password)
         
         if (response.success) {
+          // Wait a bit to ensure localStorage is updated
+          await new Promise(resolve => setTimeout(resolve, 100))
+          
+          // Trigger auth state update event
+          window.dispatchEvent(new CustomEvent('auth-state-changed'))
+          
           // Redirect to dashboard
-          router.push('/')
+          router.push('/').then(() => {
+            // Trigger again after navigation
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent('auth-state-changed'))
+            }, 50)
+          })
         } else {
           errorMessage.value = response.message || 'Login gagal'
         }

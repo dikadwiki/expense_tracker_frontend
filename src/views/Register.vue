@@ -4,7 +4,7 @@
       <!-- Header -->
       <div>
         <div class="flex justify-center">
-          <div class="w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-lg flex items-center justify-center">
+          <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-lg">
             <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z" />
             </svg>
@@ -15,7 +15,7 @@
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
           Sudah punya akun?
-          <router-link to="/login" class="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400">
+          <router-link to="/login" class="font-medium text-emerald-600 hover:text-emerald-500 dark:text-emerald-400">
             Masuk di sini
           </router-link>
         </p>
@@ -177,8 +177,19 @@ export default {
         )
         
         if (response.success) {
+          // Wait a bit to ensure localStorage is updated
+          await new Promise(resolve => setTimeout(resolve, 100))
+          
+          // Trigger auth state update event
+          window.dispatchEvent(new CustomEvent('auth-state-changed'))
+          
           // Redirect to dashboard
-          router.push('/')
+          router.push('/').then(() => {
+            // Trigger again after navigation
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent('auth-state-changed'))
+            }, 50)
+          })
         } else {
           errorMessage.value = response.message || 'Registrasi gagal'
         }

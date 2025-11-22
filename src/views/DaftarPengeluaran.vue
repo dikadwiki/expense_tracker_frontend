@@ -89,7 +89,7 @@
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-sm font-medium text-gray-700">Total:</span>
-            <span class="text-lg font-bold text-primary-600 text-money">
+            <span class="text-lg font-bold text-emerald-600 dark:text-emerald-400 text-money">
               {{ formatRupiah(totalFiltered) }}
             </span>
           </div>
@@ -189,7 +189,7 @@
               <td class="px-6 py-4 text-right space-x-2">
                 <router-link
                   :to="`/pengeluaran/edit/${item.id}`"
-                  class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+                  class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-medium"
                 >
                   Edit
                 </router-link>
@@ -241,7 +241,7 @@
                 <div class="mt-2 space-x-2">
                   <router-link
                     :to="`/pengeluaran/edit/${item.id}`"
-                    class="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                    class="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
                   >
                     Edit
                   </router-link>
@@ -279,7 +279,7 @@
                   @click="changePage(page)"
                   class="px-3 py-1 text-sm border rounded-md"
                   :class="page === currentPage 
-                    ? 'bg-primary-600 text-white border-primary-600' 
+                    ? 'bg-emerald-600 text-white border-emerald-600' 
                     : 'border-gray-300 hover:bg-gray-100'"
                 >
                   {{ page }}

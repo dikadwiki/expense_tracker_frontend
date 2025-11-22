@@ -7,12 +7,12 @@
           <!-- Logo dan Brand -->
           <div class="flex items-center animate-scaleIn">
             <router-link to="/" class="flex items-center space-x-3 group">
-              <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 dark:from-primary-400 dark:to-primary-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h1 class="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 dark:from-primary-400 dark:via-purple-400 dark:to-pink-400 group-hover:scale-105 transition-transform duration-300">Expense Tracker</h1>
+              <h1 class="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 group-hover:scale-105 transition-transform duration-300">DN EXPENSE</h1>
             </router-link>
           </div>
 
@@ -23,14 +23,14 @@
                 v-for="item in menuItems"
                 :key="item.name"
                 :to="item.path"
-                class="relative text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 group"
+                class="relative text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 group"
                 :class="{ 
-                  'text-primary-600 dark:text-primary-400 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/30 dark:to-purple-900/20 shadow-md': $route.path === item.path 
+                  'text-emerald-600 dark:text-emerald-400 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/20 shadow-md': $route.path === item.path 
                 }"
               >
                 <component :is="item.icon" class="w-5 h-5 inline mr-2 group-hover:scale-110 transition-transform duration-300" />
                 {{ item.name }}
-                <span v-if="$route.path === item.path" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-purple-500 rounded-full"></span>
+                <span v-if="$route.path === item.path" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"></span>
               </router-link>
               
               <!-- Profile Dropdown -->
@@ -39,7 +39,7 @@
                   @click="profileDropdownOpen = !profileDropdownOpen"
                   class="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
                 >
-                  <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
+                  <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -126,7 +126,7 @@
                 @click="profileDropdownOpen = !profileDropdownOpen"
                 class="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
               >
-                <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
+                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -218,8 +218,8 @@
             :key="item.name"
             :to="item.path"
             @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors duration-200"
-            :class="{ 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30': $route.path === item.path }"
+            class="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors duration-200"
+            :class="{ 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30': $route.path === item.path }"
           >
             <component :is="item.icon" class="w-5 h-5 inline mr-2" />
             {{ item.name }}
@@ -263,7 +263,7 @@
 </template>
 
 <script>
-import { ref, computed, provide, reactive, onMounted, watch } from 'vue'
+import { ref, computed, provide, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useDarkMode } from '@/composables/useDarkMode'
 import { authService } from '@/services/api'
@@ -293,13 +293,22 @@ export default {
     // Dark mode functionality
     const { isDark, toggleDarkMode } = useDarkMode()
     
-    // Check authentication
-    const isAuthenticated = computed(() => authService.isAuthenticated())
+    // Authentication state (reactive ref instead of computed)
+    const isAuthenticated = ref(authService.isAuthenticated())
     const isAuthPage = computed(() => route.path === '/login' || route.path === '/register')
     
     // Get current user
     const updateCurrentUser = () => {
       currentUser.value = authService.getCurrentUser()
+    }
+
+    // Update authentication state
+    const updateAuthState = () => {
+      const newAuthState = authService.isAuthenticated()
+      if (isAuthenticated.value !== newAuthState) {
+        isAuthenticated.value = newAuthState
+      }
+      updateCurrentUser()
     }
     
     // Logout handler
@@ -307,30 +316,64 @@ export default {
       profileDropdownOpen.value = false
       try {
         await authService.logout()
-        currentUser.value = null
-        router.push('/login')
       } catch (error) {
         console.error('Logout error:', error)
+      } finally {
         // Force logout even if API call fails
-        currentUser.value = null
+        updateAuthState()
         router.push('/login')
       }
     }
     
+    // Handle storage change
+    const handleStorageChange = () => {
+      updateAuthState()
+    }
+
     // Update user on mount and route change
     onMounted(() => {
-      updateCurrentUser()
+      updateAuthState()
       // Close dropdown when clicking outside
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.relative')) {
           profileDropdownOpen.value = false
         }
       })
+
+      // Listen to storage changes (untuk sync antar tabs)
+      window.addEventListener('storage', handleStorageChange)
+      
+      // Listen to custom auth events (untuk trigger dari login/register)
+      window.addEventListener('auth-state-changed', handleStorageChange)
     })
 
-    // Watch route changes to update user
+    // Cleanup event listeners
+    onUnmounted(() => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('auth-state-changed', handleStorageChange)
+    })
+
+    // Watch route changes to update auth state immediately
     watch(() => route.path, () => {
-      updateCurrentUser()
+      // Update immediately on route change
+      nextTick(() => {
+        updateAuthState()
+        // Also check after a small delay to catch async localStorage updates
+        setTimeout(() => {
+          updateAuthState()
+        }, 100)
+      })
+    })
+
+    // Watch for route changes using router hooks
+    router.afterEach(() => {
+      // Update auth state after navigation
+      nextTick(() => {
+        updateAuthState()
+        setTimeout(() => {
+          updateAuthState()
+        }, 100)
+      })
     })
 
     // Menu items untuk navigasi
