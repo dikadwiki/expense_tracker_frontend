@@ -235,8 +235,6 @@
 <script>
 import { ref, computed, onMounted, inject, nextTick } from 'vue'
 import { pengeluaranService } from '@/services/api'
-import { format, startOfYear, endOfYear, eachMonthOfInterval, getMonth, getYear } from 'date-fns'
-import { id } from 'date-fns/locale'
 import Chart from 'chart.js/auto'
 
 // Import icons
@@ -252,7 +250,7 @@ import {
 } from '@heroicons/vue/24/outline'
 
 export default {
-  name: 'Laporan',
+  name: 'LaporanPage',
   components: {
     CurrencyDollarIcon,
     CalculatorIcon,
