@@ -252,7 +252,7 @@ import {
 } from '@heroicons/vue/24/outline'
 
 export default {
-  name: 'Dashboard',
+  name: 'DashboardPage',
   components: {
     CurrencyDollarIcon,
     ChartBarIcon,

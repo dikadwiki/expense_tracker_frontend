@@ -328,7 +328,6 @@
     <ModalDialog
       :show="showDeleteModal"
       type="danger"
-      :icon="ExclamationTriangleIcon"
       title="Hapus Pengeluaran"
       :message="`Apakah Anda yakin ingin menghapus pengeluaran '${selectedItem?.judul}'? Tindakan ini tidak dapat dibatalkan.`"
       :show-default-buttons="true"
@@ -346,14 +345,12 @@ import { ref, computed, onMounted, inject, watch } from 'vue'
 import { pengeluaranService, kategoriService } from '@/services/api'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
-import { debounce } from 'lodash'
 
 // Import icons
 import {
   PlusIcon,
   MagnifyingGlassIcon,
   CurrencyDollarIcon,
-  ExclamationTriangleIcon,
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -362,7 +359,6 @@ export default {
     PlusIcon,
     MagnifyingGlassIcon,
     CurrencyDollarIcon,
-    ExclamationTriangleIcon,
   },
   setup() {
     const toast = inject('toast')
@@ -450,7 +446,7 @@ export default {
     })
 
     // Watch filtered data and update pagination
-    watch(filteredPengeluaran, (newData) => {
+    watch(filteredPengeluaran, () => {
       currentPage.value = 1
       updateDisplayedData()
     })
@@ -511,9 +507,16 @@ export default {
       // This function exists for explicit filter actions
     }
 
-    const debouncedSearch = debounce(() => {
-      applyFilters()
-    }, 500)
+    // Debounce function
+    let searchTimeout = null
+    const debouncedSearch = () => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout)
+      }
+      searchTimeout = setTimeout(() => {
+        applyFilters()
+      }, 500)
+    }
 
     const resetFilters = () => {
       filters.value = {
