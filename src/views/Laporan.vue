@@ -27,16 +27,17 @@
             </div>
           </div>
           
-          <div>
-            <button @click="exportData" class="btn-secondary w-full" :disabled="loading">
+          <div class="flex space-x-2 md:col-span-2 md:justify-end">
+            <button @click="exportData" class="btn-secondary flex-1 md:flex-none inline-flex items-center justify-center px-4" :disabled="loading">
               <DocumentArrowDownIcon class="w-5 h-5 mr-2" />
               Export CSV
             </button>
-          </div>
-          
-          <div>
-            <button @click="loadData" class="btn-primary w-full" :disabled="loading">
-              <MagnifyingGlassIcon class="w-5 h-5 mr-2" />
+            <button @click="loadData" class="btn-primary flex-1 md:flex-none inline-flex items-center justify-center px-4" :disabled="loading">
+              <ArrowPathIcon v-if="!loading" class="w-5 h-5 mr-2" />
+              <svg v-else class="animate-spin w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
               Refresh
             </button>
           </div>
@@ -247,7 +248,7 @@ import {
   ChartPieIcon,
   DocumentTextIcon,
   DocumentArrowDownIcon,
-  MagnifyingGlassIcon,
+  ArrowPathIcon,
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -260,7 +261,7 @@ export default {
     ChartPieIcon,
     DocumentTextIcon,
     DocumentArrowDownIcon,
-    MagnifyingGlassIcon,
+    ArrowPathIcon,
   },
   setup() {
     const toast = inject('toast')

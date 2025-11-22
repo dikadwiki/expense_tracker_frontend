@@ -1,9 +1,9 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
     <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-      <p class="mt-2 text-gray-600">Ringkasan pengeluaran dan aktivitas keuangan Anda</p>
+    <div class="mb-8 animate-slideDown">
+      <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 gradient-text">Dashboard</h1>
+      <p class="text-gray-600 dark:text-gray-400 text-lg font-medium">Ringkasan pengeluaran dan aktivitas keuangan Anda</p>
     </div>
 
     <!-- Loading State -->
@@ -23,68 +23,68 @@
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Pengeluaran Bulan Ini -->
-        <div class="card bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+        <div class="card bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.1s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-primary-100 text-sm font-medium">Total Bulan Ini</p>
-                <p class="text-2xl font-bold text-money">
+                <p class="text-primary-100 text-sm font-semibold mb-1">Total Bulan Ini</p>
+                <p class="text-3xl font-black text-money drop-shadow-lg">
                   {{ formatRupiah(ringkasan.total_bulan_ini) }}
                 </p>
               </div>
-              <div class="w-12 h-12 bg-primary-400 rounded-lg flex items-center justify-center">
-                <CurrencyDollarIcon class="w-6 h-6 text-white" />
+              <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
+                <CurrencyDollarIcon class="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Total Pengeluaran Tahun Ini -->
-        <div class="card">
+        <div class="card bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.2s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-600 text-sm font-medium">Total Tahun Ini</p>
-                <p class="text-2xl font-bold text-gray-900 text-money">
+                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Total Tahun Ini</p>
+                <p class="text-3xl font-black text-gray-900 dark:text-white text-money">
                   {{ formatRupiah(ringkasan.total_tahun_ini) }}
                 </p>
               </div>
-              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <ChartBarIcon class="w-6 h-6 text-green-600" />
+              <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <ChartBarIcon class="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Jumlah Transaksi -->
-        <div class="card">
+        <div class="card bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.3s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-600 text-sm font-medium">Transaksi Bulan Ini</p>
-                <p class="text-2xl font-bold text-gray-900">
+                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Transaksi Bulan Ini</p>
+                <p class="text-3xl font-black text-gray-900 dark:text-white">
                   {{ ringkasan.jumlah_transaksi_bulan_ini }}
                 </p>
               </div>
-              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <DocumentTextIcon class="w-6 h-6 text-blue-600" />
+              <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <DocumentTextIcon class="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Rata-rata Pengeluaran -->
-        <div class="card">
+        <div class="card bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.4s">
           <div class="card-body">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-600 text-sm font-medium">Rata-rata/Hari</p>
-                <p class="text-2xl font-bold text-gray-900 text-money">
+                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Rata-rata/Hari</p>
+                <p class="text-3xl font-black text-gray-900 dark:text-white text-money">
                   {{ formatRupiah(ringkasan.rata_rata_per_hari) }}
                 </p>
               </div>
-              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <CalculatorIcon class="w-6 h-6 text-purple-600" />
+              <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <CalculatorIcon class="w-7 h-7 text-white" />
               </div>
             </div>
           </div>

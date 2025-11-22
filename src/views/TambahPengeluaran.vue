@@ -73,7 +73,9 @@
                 class="form-input dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100"
                 :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': errors.kategori_id }"
               >
-                <option value="">Pilih Kategori</option>
+                <option value="">
+                  {{ loadingKategori ? 'Memuat kategori...' : daftarKategori.length === 0 ? 'Kategori tidak tersedia' : 'Pilih Kategori' }}
+                </option>
                 <option
                   v-for="kategori in daftarKategori"
                   :key="kategori.id"
@@ -83,6 +85,9 @@
                 </option>
               </select>
               <p v-if="errors.kategori_id" class="mt-1 text-sm text-red-600">{{ errors.kategori_id }}</p>
+              <p v-if="loadingKategori && daftarKategori.length === 0" class="mt-1 text-sm text-blue-600 dark:text-blue-400">
+                Memuat kategori default...
+              </p>
             </div>
           </div>
 
@@ -220,6 +225,7 @@ export default {
     const router = useRouter()
     const toast = inject('toast')
     const loading = ref(false)
+    const loadingKategori = ref(true)
     const daftarKategori = ref([])
 
     // Form data
@@ -270,12 +276,45 @@ export default {
 
     // Load categories
     const loadKategori = async () => {
+      loadingKategori.value = true
       try {
+        console.log('Loading kategori...')
         const response = await kategoriService.dapatkanSemua()
-        daftarKategori.value = response.data || []
+        console.log('Kategori response:', response)
+        
+        // Backend menggunakan 'sukses' dan 'data'
+        let kategoriData = []
+        if (response && response.sukses && response.data) {
+          kategoriData = Array.isArray(response.data) ? response.data : []
+        } else if (response && response.success && response.data) {
+          // Fallback untuk format 'success'
+          kategoriData = Array.isArray(response.data) ? response.data : []
+        } else if (Array.isArray(response)) {
+          // Jika response langsung array
+          kategoriData = response
+        } else if (response && response.data && Array.isArray(response.data)) {
+          kategoriData = response.data
+        }
+        
+        daftarKategori.value = kategoriData
+        console.log('Daftar kategori loaded:', daftarKategori.value.length, 'items')
+        loadingKategori.value = false
+        
+        // Jika tidak ada kategori, tunggu sebentar dan reload sekali
+        if (daftarKategori.value.length === 0) {
+          console.warn('Tidak ada kategori, menunggu backend membuat kategori default...')
+          // Backend seharusnya sudah membuat kategori default, tunggu 2 detik lalu reload
+          setTimeout(async () => {
+            console.log('Reloading kategori setelah delay...')
+            await loadKategori()
+          }, 2000)
+        }
       } catch (error) {
         console.error('Error loading kategori:', error)
-        toast.error('Gagal memuat data kategori: ' + error.message)
+        console.error('Error details:', error.response?.data || error.message)
+        loadingKategori.value = false
+        toast.error('Gagal memuat data kategori: ' + (error.message || 'Unknown error'))
+        daftarKategori.value = []
       }
     }
 
@@ -366,6 +405,7 @@ export default {
       form,
       errors,
       loading,
+      loadingKategori,
       daftarKategori,
       quickAmounts,
       isFormValid,
