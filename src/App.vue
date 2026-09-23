@@ -7,12 +7,12 @@
           <!-- Logo dan Brand -->
           <div class="flex items-center animate-scaleIn">
             <router-link to="/" class="flex items-center space-x-3 group">
-              <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <div class="w-10 h-10 bg-gradient-to-br from-teal-500 via-teal-500 to-cyan-600 dark:from-teal-400 dark:via-teal-400 dark:to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h1 class="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 group-hover:scale-105 transition-transform duration-300">DN EXPENSE</h1>
+              <h1 class="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-teal-600 to-cyan-600 dark:from-teal-400 dark:via-teal-400 dark:to-cyan-400 group-hover:scale-105 transition-transform duration-300">DN EXPENSE</h1>
             </router-link>
           </div>
 
@@ -23,14 +23,14 @@
                 v-for="item in menuItems"
                 :key="item.name"
                 :to="item.path"
-                class="relative text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 group"
+                class="relative text-gray-600 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 group"
                 :class="{ 
-                  'text-emerald-600 dark:text-emerald-400 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/20 shadow-md': $route.path === item.path 
+                  'text-teal-600 dark:text-teal-400 bg-gradient-to-r from-teal-50 to-teal-50 dark:from-teal-900/30 dark:to-teal-900/20 shadow-md': $route.path === item.path 
                 }"
               >
                 <component :is="item.icon" class="w-5 h-5 inline mr-2 group-hover:scale-110 transition-transform duration-300" />
                 {{ item.name }}
-                <span v-if="$route.path === item.path" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"></span>
+                <span v-if="$route.path === item.path" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full"></span>
               </router-link>
               
               <!-- Profile Dropdown -->
@@ -39,7 +39,7 @@
                   @click="profileDropdownOpen = !profileDropdownOpen"
                   class="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
                 >
-                  <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
+                  <div class="w-8 h-8 bg-gradient-to-br from-teal-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -126,7 +126,7 @@
                 @click="profileDropdownOpen = !profileDropdownOpen"
                 class="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
               >
-                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
+                <div class="w-8 h-8 bg-gradient-to-br from-teal-500 via-teal-500 to-cyan-600 rounded-full flex items-center justify-center shadow-md">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -218,8 +218,8 @@
             :key="item.name"
             :to="item.path"
             @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors duration-200"
-            :class="{ 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30': $route.path === item.path }"
+            class="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors duration-200"
+            :class="{ 'text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-500/10': $route.path === item.path }"
           >
             <component :is="item.icon" class="w-5 h-5 inline mr-2" />
             {{ item.name }}

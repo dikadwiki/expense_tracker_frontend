@@ -1,326 +1,135 @@
-<template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+﻿<template>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
     <!-- Header -->
-    <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Daftar Pengeluaran</h1>
-        <p class="mt-2 text-gray-600">Kelola dan pantau semua pengeluaran Anda</p>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-zinc-50">Transaksiku</h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">Catat dan pantau semua pengeluaran Anda.</p>
       </div>
-      <div class="mt-4 sm:mt-0">
-        <router-link
-          to="/pengeluaran/tambah"
-          class="btn-primary inline-flex items-center"
-        >
-          <PlusIcon class="w-5 h-5 mr-2" />
-          Tambah Pengeluaran
-        </router-link>
-      </div>
+      <router-link to="/pengeluaran/tambah" class="btn-primary inline-flex items-center w-fit">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        Tambah Baru
+      </router-link>
     </div>
 
-    <!-- Filters -->
-    <div class="card mb-6">
-      <div class="card-body">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <!-- Search -->
-          <div>
-            <label class="form-label">Cari Pengeluaran</label>
-            <div class="relative">
-              <input
-                v-model="filters.search"
-                type="text"
-                placeholder="Cari berdasarkan judul..."
-                class="form-input pl-10"
-                @input="debouncedSearch"
-              >
-              <MagnifyingGlassIcon class="w-5 h-5 text-gray-400 absolute left-3 top-3" />
-            </div>
-          </div>
-
-          <!-- Kategori Filter -->
-          <div>
-            <label class="form-label">Kategori</label>
-            <select v-model="filters.kategori" @change="applyFilters" class="form-input">
-              <option value="">Semua Kategori</option>
-              <option
-                v-for="kategori in daftarKategori"
-                :key="kategori.id"
-                :value="kategori.id"
-              >
-                {{ kategori.nama }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Tanggal Mulai -->
-          <div>
-            <label class="form-label">Tanggal Mulai</label>
-            <input
-              v-model="filters.tanggal_mulai"
-              type="date"
-              class="form-input"
-              @change="applyFilters"
-            >
-          </div>
-
-          <!-- Tanggal Akhir -->
-          <div>
-            <label class="form-label">Tanggal Akhir</label>
-            <input
-              v-model="filters.tanggal_akhir"
-              type="date"
-              class="form-input"
-              @change="applyFilters"
-            >
-          </div>
-        </div>
-
-        <!-- Filter Actions -->
-        <div class="mt-4 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <button
-              @click="resetFilters"
-              class="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Reset Filter
-            </button>
-            <div class="text-sm text-gray-500">
-              {{ filteredCount }} dari {{ totalCount }} pengeluaran
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm font-medium text-gray-700">Total:</span>
-            <span class="text-lg font-bold text-emerald-600 dark:text-emerald-400 text-money">
-              {{ formatRupiah(totalFiltered) }}
-            </span>
-          </div>
-        </div>
-      </div>
+    <!-- Mini Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+       <div class="card p-5">
+         <div class="text-xs font-medium text-slate-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Total Terfilter</div>
+         <div class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">{{ formatRupiah(totalFiltered) }}</div>
+       </div>
+       <div class="card p-5">
+         <div class="text-xs font-medium text-slate-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Jumlah Transaksi</div>
+         <div class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">{{ filteredCount }} <span class="text-sm font-normal text-slate-500 dark:text-zinc-500">transaksi</span></div>
+       </div>
+       <div class="card p-5">
+         <div class="text-xs font-medium text-slate-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Rata-rata Transaksi</div>
+         <div class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">{{ formatRupiah(filteredCount > 0 ? totalFiltered / filteredCount : 0) }}</div>
+       </div>
     </div>
 
-    <!-- Content -->
-    <div class="card">
+    <!-- Filter Bar Segmented -->
+    <div class="card mb-6 p-2 flex flex-col md:flex-row gap-2 md:items-center">
+       <div class="relative flex-1">
+         <MagnifyingGlassIcon class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+         <input v-model="filters.search" type="text" placeholder="Cari transaksi..." class="w-full pl-9 pr-3 py-2 bg-slate-50/50 dark:bg-zinc-900/50 border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 focus:border-slate-300 dark:focus:border-zinc-600 rounded-md text-sm transition-all outline-none text-slate-800 dark:text-zinc-200" @input="debouncedSearch">
+       </div>
+       <div class="w-px h-6 bg-slate-200 dark:bg-zinc-800 hidden md:block mx-1"></div>
+       <select v-model="filters.kategori" @change="applyFilters" class="py-2 pl-3 pr-8 bg-transparent border-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-md text-sm text-slate-600 dark:text-zinc-300 outline-none transition-all cursor-pointer">
+         <option value="">Semua Kategori</option>
+         <option v-for="k in daftarKategori" :key="k.id" :value="k.id">{{ k.nama }}</option>
+       </select>
+       <input v-model="filters.tanggal_mulai" type="date" class="py-2 px-3 bg-transparent border-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-md text-sm text-slate-600 dark:text-zinc-300 outline-none transition-all cursor-pointer" @change="applyFilters">
+       <span class="text-slate-400 hidden md:inline">-</span>
+       <input v-model="filters.tanggal_akhir" type="date" class="py-2 px-3 bg-transparent border-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-md text-sm text-slate-600 dark:text-zinc-300 outline-none transition-all cursor-pointer" @change="applyFilters">
+       
+       <button v-if="hasActiveFilters" @click="resetFilters" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-md transition-all md:ml-auto flex items-center justify-center" title="Reset Filter">
+         <XMarkIcon class="w-4 h-4" />
+       </button>
+    </div>
+
+    <!-- Table Content -->
+    <div class="card overflow-hidden">
       <!-- Loading State -->
-      <div v-if="loading" class="card-body">
-        <div class="space-y-4">
-          <div v-for="i in 5" :key="i" class="loading-shimmer h-16 rounded-lg"></div>
-        </div>
+      <div v-if="loading" class="p-6 space-y-4">
+        <div v-for="i in 5" :key="i" class="h-12 bg-slate-100 dark:bg-zinc-800/50 rounded-lg animate-pulse"></div>
       </div>
 
-      <!-- Data Table -->
-      <div v-else-if="pengeluaran.length > 0">
-      <!-- Desktop Table -->
-      <div class="hidden md:block overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-800">
-            <tr>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Pengeluaran
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Kategori
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Tanggal
-              </th>
-              <th
-                class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Jumlah
-              </th>
-              <th
-                class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Aksi
-              </th>
+      <!-- Empty State -->
+      <div v-else-if="pengeluaran.length === 0" class="flex flex-col items-center justify-center py-20 px-4 text-center">
+        <div class="w-16 h-16 bg-slate-50 dark:bg-zinc-900 rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-zinc-800">
+           <ReceiptRefundIcon class="w-8 h-8 text-slate-300 dark:text-zinc-600" />
+        </div>
+        <h3 class="text-sm font-medium text-slate-900 dark:text-zinc-100 mb-1">Belum ada transaksi</h3>
+        <p class="text-sm text-slate-500 dark:text-zinc-400 mb-6 max-w-sm">{{ hasActiveFilters ? 'Coba ubah filter pencarian Anda.' : 'Mulai catat pengeluaran pertama Anda hari ini.' }}</p>
+        <router-link v-if="!hasActiveFilters" to="/pengeluaran/tambah" class="btn-primary inline-flex items-center text-sm">
+          <PlusIcon class="w-4 h-4 mr-2" />
+          Catat Pengeluaran
+        </router-link>
+        <button v-else @click="resetFilters" class="btn-secondary text-sm">Reset Filter</button>
+      </div>
+
+      <!-- Data -->
+      <div v-else class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-slate-200/60 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/20">
+              <th class="px-5 py-3 text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider w-2/5">Deskripsi</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Kategori</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Tanggal</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider text-right">Nominal</th>
+              <th class="px-5 py-3 w-16"></th>
             </tr>
           </thead>
-
-          <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr
-              v-for="item in pengeluaran"
-              :key="item.id"
-              class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150"
-            >
-              <td class="px-6 py-4">
-                <div>
-                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {{ item.judul }}
-                  </div>
-                  <div
-                    v-if="item.deskripsi"
-                    class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs"
-                  >
-                    {{ item.deskripsi }}
-                  </div>
-                </div>
+          <tbody class="divide-y divide-slate-100 dark:divide-zinc-800/80">
+            <tr v-for="item in pengeluaran" :key="item.id" class="group hover:bg-slate-50/80 dark:hover:bg-zinc-800/50 transition-colors">
+              <td class="px-5 py-3.5">
+                <div class="text-sm font-medium text-slate-900 dark:text-zinc-100">{{ item.judul }}</div>
+                <div v-if="item.deskripsi" class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5 truncate max-w-xs">{{ item.deskripsi }}</div>
               </td>
-
-              <td class="px-6 py-4">
-                <div v-if="item.kategori_nama" class="flex items-center">
-                  <div
-                    class="w-3 h-3 rounded-full mr-2"
-                    :style="{ backgroundColor: item.kategori_warna }"
-                  ></div>
-                  <span class="text-sm text-gray-900 dark:text-gray-100">
-                    {{ item.kategori_nama }}
-                  </span>
-                </div>
-                <span v-else class="text-sm text-gray-500 dark:text-gray-400">
-                  Tanpa Kategori
-                </span>
+              <td class="px-5 py-3.5">
+                 <span class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-medium border" :style="{ backgroundColor: (item.kategori_warna || '#94a3b8') + '15', color: item.kategori_warna || '#64748b', borderColor: (item.kategori_warna || '#94a3b8') + '30' }">
+                    <span class="w-1.5 h-1.5 rounded-full mr-1.5" :style="{ backgroundColor: item.kategori_warna || '#94a3b8' }"></span>
+                    {{ item.kategori_nama || 'Lainnya' }}
+                 </span>
               </td>
-
-              <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+              <td class="px-5 py-3.5 text-sm text-slate-600 dark:text-zinc-300">
                 {{ formatTanggal(item.tanggal_transaksi) }}
               </td>
-
-              <td class="px-6 py-4 text-right">
-                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 text-money">
-                  {{ formatRupiah(item.jumlah) }}
-                </span>
+              <td class="px-5 py-3.5 text-right">
+                <span class="text-sm font-semibold text-slate-900 dark:text-zinc-100 text-money">{{ formatRupiah(item.jumlah) }}</span>
               </td>
-
-              <td class="px-6 py-4 text-right space-x-2">
-                <router-link
-                  :to="`/pengeluaran/edit/${item.id}`"
-                  class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-medium"
-                >
-                  Edit
-                </router-link>
-                <button
-                  @click="confirmDelete(item)"
-                  class="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 text-sm font-medium"
-                >
-                  Hapus
-                </button>
+              <td class="px-5 py-3.5 text-right">
+                <div class="flex items-center justify-end space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <router-link :to="`/pengeluaran/edit/${item.id}`" class="p-1.5 text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 bg-white dark:bg-zinc-900 hover:bg-teal-50 dark:hover:bg-teal-500/10 rounded-md border border-slate-200 dark:border-zinc-700 shadow-sm transition-all" title="Edit">
+                    <PencilIcon class="w-3.5 h-3.5" />
+                  </router-link>
+                  <button @click="confirmDelete(item)" class="p-1.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 bg-white dark:bg-zinc-900 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md border border-slate-200 dark:border-zinc-700 shadow-sm transition-all" title="Hapus">
+                    <TrashIcon class="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-
-
-        <!-- Mobile Cards -->
-        <div class="md:hidden divide-y divide-gray-200">
-          <div
-            v-for="item in pengeluaran"
-            :key="item.id"
-            class="p-4 hover:bg-gray-50 transition-colors duration-150"
-          >
-            <div class="flex items-start justify-between">
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center space-x-2 mb-1">
-                  <div
-                    v-if="item.kategori_warna"
-                    class="w-3 h-3 rounded-full flex-shrink-0"
-                    :style="{ backgroundColor: item.kategori_warna }"
-                  ></div>
-                  <span class="text-xs text-gray-500 truncate">
-                    {{ item.kategori_nama || 'Tanpa Kategori' }}
-                  </span>
-                </div>
-                <h3 class="text-sm font-medium text-gray-900 truncate">{{ item.judul }}</h3>
-                <p v-if="item.deskripsi" class="text-sm text-gray-500 truncate mt-1">
-                  {{ item.deskripsi }}
-                </p>
-                <p class="text-xs text-gray-500 mt-1">
-                  {{ formatTanggal(item.tanggal_transaksi) }}
-                </p>
-              </div>
-              <div class="text-right ml-4">
-                <p class="text-sm font-semibold text-gray-900 text-money">
-                  {{ formatRupiah(item.jumlah) }}
-                </p>
-                <div class="mt-2 space-x-2">
-                  <router-link
-                    :to="`/pengeluaran/edit/${item.id}`"
-                    class="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
-                  >
-                    Edit
-                  </router-link>
-                  <button
-                    @click="confirmDelete(item)"
-                    class="text-xs text-red-600 hover:text-red-700 font-medium"
-                  >
-                    Hapus
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pagination -->
-        <div v-if="totalPages > 1" class="bg-gray-50 px-4 py-3 border-t border-gray-200">
-          <div class="flex items-center justify-between">
-            <div class="text-sm text-gray-700">
-              Menampilkan {{ ((currentPage - 1) * itemsPerPage) + 1 }} sampai 
-              {{ Math.min(currentPage * itemsPerPage, totalCount) }} dari {{ totalCount }} hasil
-            </div>
-            <div class="flex items-center space-x-2">
-              <button
-                @click="changePage(currentPage - 1)"
-                :disabled="currentPage === 1"
-                class="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                Sebelumnya
-              </button>
-              <div class="flex items-center space-x-1">
-                <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  @click="changePage(page)"
-                  class="px-3 py-1 text-sm border rounded-md"
-                  :class="page === currentPage 
-                    ? 'bg-emerald-600 text-white border-emerald-600' 
-                    : 'border-gray-300 hover:bg-gray-100'"
-                >
-                  {{ page }}
-                </button>
-              </div>
-              <button
-                @click="changePage(currentPage + 1)"
-                :disabled="currentPage === totalPages"
-                class="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                Selanjutnya
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Empty State -->
-      <div v-else class="card-body text-center py-12">
-        <CurrencyDollarIcon class="w-16 h-16 mx-auto text-gray-300 mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum Ada Pengeluaran</h3>
-        <p class="text-gray-500 mb-6">
-          {{ hasActiveFilters ? 'Tidak ada pengeluaran yang sesuai dengan filter' : 'Mulai catat pengeluaran pertama Anda' }}
-        </p>
-        <div class="space-x-3">
-          <router-link
-            v-if="!hasActiveFilters"
-            to="/pengeluaran/tambah"
-            class="btn-primary inline-flex items-center"
-          >
-            <PlusIcon class="w-5 h-5 mr-2" />
-            Tambah Pengeluaran
-          </router-link>
-          <button
-            v-if="hasActiveFilters"
-            @click="resetFilters"
-            class="btn-secondary"
-          >
-            Reset Filter
-          </button>
-        </div>
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="border-t border-slate-200/60 dark:border-zinc-800 p-4 flex items-center justify-between bg-slate-50/30 dark:bg-zinc-900/20">
+         <div class="text-xs text-slate-500 dark:text-zinc-400">
+           Menampilkan <span class="font-medium text-slate-700 dark:text-zinc-200">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> - <span class="font-medium text-slate-700 dark:text-zinc-200">{{ Math.min(currentPage * itemsPerPage, totalCount) }}</span> dari <span class="font-medium text-slate-700 dark:text-zinc-200">{{ totalCount }}</span>
+         </div>
+         <div class="flex space-x-1">
+           <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1" class="px-2.5 py-1.5 border border-slate-200 dark:border-zinc-700 rounded-md text-xs font-medium text-slate-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+             Prev
+           </button>
+           <button v-for="page in visiblePages" :key="page" @click="changePage(page)" class="px-2.5 py-1.5 border rounded-md text-xs font-medium transition-colors" :class="page === currentPage ? 'bg-slate-900 dark:bg-teal-600 border-slate-900 dark:border-teal-500 text-white' : 'border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700'">
+             {{ page }}
+           </button>
+           <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages" class="px-2.5 py-1.5 border border-slate-200 dark:border-zinc-700 rounded-md text-xs font-medium text-slate-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+             Next
+           </button>
+         </div>
       </div>
     </div>
 
@@ -328,8 +137,8 @@
     <ModalDialog
       :show="showDeleteModal"
       type="danger"
-      title="Hapus Pengeluaran"
-      :message="`Apakah Anda yakin ingin menghapus pengeluaran '${selectedItem?.judul}'? Tindakan ini tidak dapat dibatalkan.`"
+      title="Hapus Transaksi"
+      :message="`Yakin ingin menghapus transaksi '${selectedItem?.judul}'?`"
       :show-default-buttons="true"
       cancel-text="Batal"
       confirm-text="Hapus"
@@ -350,7 +159,10 @@ import { id } from 'date-fns/locale'
 import {
   PlusIcon,
   MagnifyingGlassIcon,
-  CurrencyDollarIcon,
+  TrashIcon,
+  PencilIcon,
+  XMarkIcon,
+  ReceiptRefundIcon,
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -358,7 +170,10 @@ export default {
   components: {
     PlusIcon,
     MagnifyingGlassIcon,
-    CurrencyDollarIcon,
+    TrashIcon,
+    PencilIcon,
+    XMarkIcon,
+    ReceiptRefundIcon,
   },
   setup() {
     const toast = inject('toast')
@@ -504,7 +319,6 @@ export default {
     // Filter functions
     const applyFilters = () => {
       // Filters are applied automatically through computed property
-      // This function exists for explicit filter actions
     }
 
     // Debounce function
@@ -515,7 +329,7 @@ export default {
       }
       searchTimeout = setTimeout(() => {
         applyFilters()
-      }, 500)
+      }, 300)
     }
 
     const resetFilters = () => {

@@ -1,232 +1,140 @@
-<template>
+﻿<template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
     <!-- Header -->
-    <div class="mb-8 animate-slideDown">
-      <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 gradient-text">Dashboard</h1>
-      <p class="text-gray-600 dark:text-gray-400 text-lg font-medium">Ringkasan pengeluaran dan aktivitas keuangan Anda</p>
+    <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-zinc-50">Dashboard</h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">Ringkasan aktivitas keuangan Anda</p>
+      </div>
+      <router-link to="/pengeluaran/tambah" class="btn-primary inline-flex items-center text-sm h-fit">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        Catat Baru
+      </router-link>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="i in 4" :key="i" class="card">
-          <div class="card-body">
-            <div class="loading-shimmer h-4 w-20 rounded mb-2"></div>
-            <div class="loading-shimmer h-8 w-32 rounded"></div>
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div v-for="i in 4" :key="i" class="card p-5 space-y-3">
+          <div class="h-3 w-16 bg-slate-100 dark:bg-zinc-800/50 rounded animate-pulse"></div>
+          <div class="h-6 w-32 bg-slate-100 dark:bg-zinc-800/50 rounded animate-pulse"></div>
         </div>
       </div>
     </div>
 
     <!-- Content -->
-    <div v-else class="space-y-8">
+    <div v-else class="space-y-6">
       <!-- Stats Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Total Pengeluaran Bulan Ini -->
-        <div class="card bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.1s">
-          <div class="card-body">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-emerald-50 text-sm font-semibold mb-1">Total Bulan Ini</p>
-                <p class="text-3xl font-black text-money drop-shadow-lg">
-                  {{ formatRupiah(ringkasan.total_bulan_ini) }}
-                </p>
-              </div>
-              <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
-                <CurrencyDollarIcon class="w-7 h-7 text-white" />
-              </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="card p-5 relative overflow-hidden group">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Bulan Ini</p>
+              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
+                {{ formatRupiah(ringkasan.total_bulan_ini) }}
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-teal-50 dark:bg-teal-500/10 flex items-center justify-center">
+              <CurrencyDollarIcon class="w-5 h-5 text-teal-600 dark:text-teal-400" />
             </div>
           </div>
         </div>
 
-        <!-- Total Pengeluaran Tahun Ini -->
-        <div class="card bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.2s">
-          <div class="card-body">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Total Tahun Ini</p>
-                <p class="text-3xl font-black text-gray-900 dark:text-white text-money">
-                  {{ formatRupiah(ringkasan.total_tahun_ini) }}
-                </p>
-              </div>
-              <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <ChartBarIcon class="w-7 h-7 text-white" />
-              </div>
+        <div class="card p-5 relative overflow-hidden group">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Tahun Ini</p>
+              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
+                {{ formatRupiah(ringkasan.total_tahun_ini) }}
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
+              <ChartBarIcon class="w-5 h-5 text-slate-600 dark:text-zinc-300" />
             </div>
           </div>
         </div>
 
-        <!-- Jumlah Transaksi -->
-        <div class="card bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.3s">
-          <div class="card-body">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Transaksi Bulan Ini</p>
-                <p class="text-3xl font-black text-gray-900 dark:text-white">
-                  {{ ringkasan.jumlah_transaksi_bulan_ini }}
-                </p>
-              </div>
-              <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <DocumentTextIcon class="w-7 h-7 text-white" />
-              </div>
+        <div class="card p-5 relative overflow-hidden group">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Transaksi Bulan Ini</p>
+              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
+                {{ ringkasan.jumlah_transaksi_bulan_ini }} <span class="text-sm font-normal text-slate-500 dark:text-zinc-500">kali</span>
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
+              <DocumentTextIcon class="w-5 h-5 text-slate-600 dark:text-zinc-300" />
             </div>
           </div>
         </div>
 
-        <!-- Rata-rata Pengeluaran -->
-        <div class="card bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 shadow-xl transform hover:scale-105 transition-all duration-300 animate-slideUp" style="animation-delay: 0.4s">
-          <div class="card-body">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-600 dark:text-gray-300 text-sm font-semibold mb-1">Rata-rata/Hari</p>
-                <p class="text-3xl font-black text-gray-900 dark:text-white text-money">
-                  {{ formatRupiah(ringkasan.rata_rata_per_hari) }}
-                </p>
-              </div>
-              <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <CalculatorIcon class="w-7 h-7 text-white" />
-              </div>
+        <div class="card p-5 relative overflow-hidden group">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Rata-rata Harian</p>
+              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
+                {{ formatRupiah(ringkasan.rata_rata_per_hari) }}
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
+              <CalculatorIcon class="w-5 h-5 text-slate-600 dark:text-zinc-300" />
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Main Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Pengeluaran per Kategori -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="text-lg font-semibold text-gray-900">Pengeluaran per Kategori</h2>
+        <div class="card lg:col-span-2 flex flex-col">
+          <div class="card-header border-b border-slate-100 dark:border-zinc-800/50 p-5">
+            <h2 class="text-sm font-semibold text-slate-900 dark:text-zinc-100">Sebaran Kategori</h2>
           </div>
-          <div class="card-body">
-            <div v-if="ringkasan.ringkasan_kategori && ringkasan.ringkasan_kategori.length > 0">
-              <canvas ref="categoryChart" class="max-h-64"></canvas>
+          <div class="card-body p-6 flex-1 flex flex-col justify-center">
+            <div v-if="ringkasan.ringkasan_kategori && ringkasan.ringkasan_kategori.length > 0" class="h-64 relative">
+              <canvas ref="categoryChart"></canvas>
             </div>
-            <div v-else class="text-center py-8 text-gray-500">
-              <TagIcon class="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p>Belum ada data pengeluaran</p>
+            <div v-else class="text-center py-12 flex flex-col items-center">
+              <div class="w-16 h-16 bg-slate-50 dark:bg-zinc-900 rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-zinc-800">
+                <TagIcon class="w-8 h-8 text-slate-300 dark:text-zinc-600" />
+              </div>
+              <p class="text-sm text-slate-500 dark:text-zinc-400">Belum ada data untuk ditampilkan</p>
             </div>
           </div>
         </div>
 
         <!-- Transaksi Terbaru -->
-        <div class="card">
-          <div class="card-header flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900">Transaksi Terbaru</h2>
-            <router-link
-              to="/pengeluaran"
-              class="text-sm text-primary-600 hover:text-primary-700 font-medium"
-            >
-              Lihat Semua
+        <div class="card flex flex-col">
+          <div class="card-header border-b border-slate-100 dark:border-zinc-800/50 p-5 flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-900 dark:text-zinc-100">Baru-baru Ini</h2>
+            <router-link to="/pengeluaran" class="text-xs font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 transition-colors">
+              Lihat Semua &rarr;
             </router-link>
           </div>
-          <div class="card-body p-0">
-            <div v-if="transaksiTerbaru.length > 0" class="divide-y divide-gray-100">
+          <div class="p-0 flex-1 overflow-y-auto max-h-[320px]">
+            <div v-if="transaksiTerbaru.length > 0" class="divide-y divide-slate-100 dark:divide-zinc-800/50">
               <div
                 v-for="transaksi in transaksiTerbaru"
                 :key="transaksi.id"
-                class="p-4 hover:bg-gray-50 transition-colors duration-150"
+                class="p-4 hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors flex items-start justify-between gap-3 group"
               >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-3">
-                    <div
-                      class="w-8 h-8 rounded-full flex items-center justify-center"
-                      :style="{ backgroundColor: transaksi.kategori_warna + '20' }"
-                    >
-                      <div
-                        class="w-2 h-2 rounded-full"
-                        :style="{ backgroundColor: transaksi.kategori_warna }"
-                      ></div>
-                    </div>
-                    <div>
-                      <p class="font-medium text-gray-900">{{ transaksi.judul }}</p>
-                      <p class="text-sm text-gray-500">
-                        {{ transaksi.kategori_nama || 'Tanpa Kategori' }} • 
-                        {{ formatTanggal(transaksi.tanggal_transaksi) }}
-                      </p>
-                    </div>
+                <div class="flex items-start gap-3 overflow-hidden">
+                  <div class="w-2 h-2 mt-2 rounded-full shrink-0" :style="{ backgroundColor: transaksi.kategori_warna || '#94a3b8' }"></div>
+                  <div class="min-w-0">
+                    <p class="text-sm font-medium text-slate-900 dark:text-zinc-100 truncate">{{ transaksi.judul }}</p>
+                    <p class="text-xs text-slate-500 dark:text-zinc-400 truncate">{{ transaksi.kategori_nama || 'Lainnya' }}</p>
                   </div>
-                  <div class="text-right">
-                    <p class="font-semibold text-gray-900 text-money">
-                      {{ formatRupiah(transaksi.jumlah) }}
-                    </p>
-                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-sm font-semibold text-slate-900 dark:text-zinc-100 text-money">{{ formatRupiah(transaksi.jumlah) }}</p>
+                  <p class="text-[11px] text-slate-400 dark:text-zinc-500 mt-0.5">{{ formatTanggalPendek(transaksi.tanggal_transaksi) }}</p>
                 </div>
               </div>
             </div>
-            <div v-else class="text-center py-8 text-gray-500">
-              <DocumentTextIcon class="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p>Belum ada transaksi</p>
-              <router-link
-                to="/pengeluaran/tambah"
-                class="mt-3 inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium"
-              >
-                <PlusIcon class="w-4 h-4 mr-1" />
-                Tambah Pengeluaran
-              </router-link>
+            <div v-else class="text-center py-10 px-4">
+               <p class="text-sm text-slate-500 dark:text-zinc-400">Belum ada transaksi bulan ini.</p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="card">
-        <div class="card-header">
-          <h2 class="text-lg font-semibold text-gray-900">Aksi Cepat</h2>
-        </div>
-        <div class="card-body">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <router-link
-              to="/pengeluaran/tambah"
-              class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group"
-            >
-              <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center group-hover:bg-primary-200 transition-colors duration-200">
-                <PlusIcon class="w-5 h-5 text-primary-600" />
-              </div>
-              <div class="ml-3">
-                <p class="font-medium text-gray-900">Tambah Pengeluaran</p>
-                <p class="text-sm text-gray-500">Catat pengeluaran baru</p>
-              </div>
-            </router-link>
-
-            <router-link
-              to="/kategori"
-              class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group"
-            >
-              <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-200">
-                <TagIcon class="w-5 h-5 text-blue-600" />
-              </div>
-              <div class="ml-3">
-                <p class="font-medium text-gray-900">Kelola Kategori</p>
-                <p class="text-sm text-gray-500">Atur kategori pengeluaran</p>
-              </div>
-            </router-link>
-
-            <router-link
-              to="/laporan"
-              class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group"
-            >
-              <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors duration-200">
-                <ChartBarIcon class="w-5 h-5 text-green-600" />
-              </div>
-              <div class="ml-3">
-                <p class="font-medium text-gray-900">Lihat Laporan</p>
-                <p class="text-sm text-gray-500">Analisis pengeluaran</p>
-              </div>
-            </router-link>
-
-            <router-link
-              to="/pengeluaran"
-              class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group"
-            >
-              <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors duration-200">
-                <DocumentTextIcon class="w-5 h-5 text-purple-600" />
-              </div>
-              <div class="ml-3">
-                <p class="font-medium text-gray-900">Riwayat Transaksi</p>
-                <p class="text-sm text-gray-500">Lihat semua pengeluaran</p>
-              </div>
-            </router-link>
           </div>
         </div>
       </div>
@@ -235,35 +143,37 @@
 </template>
 
 <script>
-import { ref, onMounted, inject } from 'vue'
+import { ref, onMounted, onUnmounted, inject, watch } from 'vue'
 import { pengeluaranService } from '@/services/api'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { id } from 'date-fns/locale'
 import Chart from 'chart.js/auto'
-
-// Import icons
 import {
   CurrencyDollarIcon,
   ChartBarIcon,
   DocumentTextIcon,
   CalculatorIcon,
   TagIcon,
-  PlusIcon,
+  PlusIcon
 } from '@heroicons/vue/24/outline'
 
 export default {
-  name: 'DashboardPage',
+  name: 'Dashboard',
   components: {
     CurrencyDollarIcon,
     ChartBarIcon,
     DocumentTextIcon,
     CalculatorIcon,
     TagIcon,
-    PlusIcon,
+    PlusIcon
   },
   setup() {
     const toast = inject('toast')
     const loading = ref(true)
+    const categoryChart = ref(null)
+    let chartInstance = null
+    const transaksiTerbaru = ref([])
+
     const ringkasan = ref({
       total_bulan_ini: 0,
       total_tahun_ini: 0,
@@ -271,11 +181,7 @@ export default {
       rata_rata_per_hari: 0,
       ringkasan_kategori: []
     })
-    const transaksiTerbaru = ref([])
-    const categoryChart = ref(null)
-    let chartInstance = null
 
-    // Format currency
     const formatRupiah = (amount) => {
       if (!amount) return 'Rp 0'
       return new Intl.NumberFormat('id-ID', {
@@ -285,127 +191,150 @@ export default {
       }).format(amount)
     }
 
-    // Format date
     const formatTanggal = (date) => {
-      return format(new Date(date), 'dd MMM yyyy', { locale: id })
+      if (!date) return '-'
+      return format(parseISO(date), 'dd MMMM yyyy', { locale: id })
     }
 
-    // Load dashboard data
-    const loadDashboardData = async () => {
-      try {
-        loading.value = true
-        
-        const currentDate = new Date()
-        const currentMonth = currentDate.getMonth() + 1
-        const currentYear = currentDate.getFullYear()
-
-        // Load ringkasan bulan ini
-        const ringkasanBulanIni = await pengeluaranService.dapatkanRingkasan({
-          bulan: currentMonth,
-          tahun: currentYear
-        })
-
-        // Load ringkasan tahun ini
-        const ringkasanTahunIni = await pengeluaranService.dapatkanRingkasan({
-          tahun: currentYear
-        })
-
-        // Load transaksi terbaru
-        const transaksi = await pengeluaranService.dapatkanSemua({ limit: 5 })
-
-        // Hitung jumlah transaksi bulan ini
-        const jumlahTransaksiBulanIni = transaksi.data.filter(t => {
-          const tanggalTransaksi = new Date(t.tanggal_transaksi)
-          return tanggalTransaksi.getMonth() === currentDate.getMonth() && 
-                 tanggalTransaksi.getFullYear() === currentDate.getFullYear()
-        }).length
-
-        // Hitung rata-rata per hari
-        const hariDalamBulan = new Date(currentYear, currentMonth, 0).getDate()
-        const rataRataPerHari = ringkasanBulanIni.data.total_pengeluaran / hariDalamBulan
-
-        ringkasan.value = {
-          total_bulan_ini: ringkasanBulanIni.data.total_pengeluaran || 0,
-          total_tahun_ini: ringkasanTahunIni.data.total_pengeluaran || 0,
-          jumlah_transaksi_bulan_ini: jumlahTransaksiBulanIni,
-          rata_rata_per_hari: rataRataPerHari || 0,
-          ringkasan_kategori: ringkasanBulanIni.data.ringkasan_kategori || []
-        }
-
-        transaksiTerbaru.value = transaksi.data || []
-
-        // Buat chart setelah data loaded
-        setTimeout(() => {
-          createCategoryChart()
-        }, 100)
-
-      } catch (error) {
-        console.error('Error loading dashboard data:', error)
-        toast.error('Gagal memuat data dashboard: ' + error.message)
-      } finally {
-        loading.value = false
-      }
+    const formatTanggalPendek = (date) => {
+      if (!date) return '-'
+      return format(parseISO(date), 'dd MMM', { locale: id })
     }
 
-    // Create category chart
-    const createCategoryChart = () => {
-      if (!categoryChart.value || !ringkasan.value.ringkasan_kategori.length) return
-
-      // Destroy existing chart
+    const initChart = () => {
       if (chartInstance) {
         chartInstance.destroy()
       }
 
+      if (!categoryChart.value || !ringkasan.value.ringkasan_kategori?.length) return
+
       const ctx = categoryChart.value.getContext('2d')
       const data = ringkasan.value.ringkasan_kategori
+
+      // check if dark mode
+      const isDark = document.documentElement.classList.contains('dark')
+      const textColor = isDark ? '#a1a1aa' : '#64748b' // zinc-400 or slate-500
 
       chartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: data.map(item => item.nama || 'Tanpa Kategori'),
+          labels: data.map(item => item.nama),
           datasets: [{
             data: data.map(item => item.total),
-            backgroundColor: data.map(item => item.warna || '#6B7280'),
-            borderWidth: 2,
-            borderColor: '#ffffff'
+            backgroundColor: data.map(item => item.warna),
+            borderWidth: 0,
+            hoverOffset: 4
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          cutout: '75%',
           plugins: {
             legend: {
-              position: 'bottom',
+              position: 'right',
               labels: {
-                padding: 20,
                 usePointStyle: true,
+                padding: 20,
+                color: textColor,
                 font: {
+                  family: 'Inter',
                   size: 12
                 }
               }
             },
             tooltip: {
+              backgroundColor: isDark ? '#18181b' : '#ffffff', // zinc-900 or white
+              titleColor: isDark ? '#f4f4f5' : '#0f172a',
+              bodyColor: isDark ? '#a1a1aa' : '#475569',
+              borderColor: isDark ? '#27272a' : '#e2e8f0',
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 8,
+              boxPadding: 6,
               callbacks: {
                 label: function(context) {
-                  const label = context.label || ''
-                  const value = formatRupiah(context.parsed)
-                  return `${label}: ${value}`
+                  let label = context.label || ''
+                  if (label) {
+                    label += ': '
+                  }
+                  if (context.parsed !== null) {
+                    label += new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                      minimumFractionDigits: 0
+                    }).format(context.parsed)
+                  }
+                  return label
                 }
               }
-            }
-          },
-          cutout: '60%',
-          elements: {
-            arc: {
-              borderRadius: 4
             }
           }
         }
       })
     }
 
+    const loadData = async () => {
+      try {
+        loading.value = true
+        
+        // Load ringkasan
+        const response = await pengeluaranService.dapatkanRingkasan()
+        
+        // Mapping data dari backend
+        if (response.data) {
+           ringkasan.value = {
+             total_bulan_ini: response.data.total_pengeluaran || 0,
+             total_tahun_ini: response.data.total_pengeluaran || 0, // Mock for now
+             jumlah_transaksi_bulan_ini: 0, 
+             rata_rata_per_hari: 0, 
+             ringkasan_kategori: response.data.ringkasan_kategori || []
+           }
+        }
+
+        // Load transaksi terbaru
+        const responseTransaksi = await pengeluaranService.dapatkanSemua({ limit: 5 })
+        if (responseTransaksi.data) {
+           transaksiTerbaru.value = responseTransaksi.data.slice(0, 5)
+           
+           // Hitung statistik tambahan dari transaksi
+           ringkasan.value.jumlah_transaksi_bulan_ini = responseTransaksi.data.length
+           if (responseTransaksi.data.length > 0) {
+             ringkasan.value.rata_rata_per_hari = ringkasan.value.total_bulan_ini / 30 // Rough estimate
+           }
+        }
+        
+      } catch (error) {
+        console.error('Error loading dashboard data:', error)
+        toast.error('Gagal memuat data dashboard')
+      } finally {
+        loading.value = false
+        // Need to wait for next tick for canvas to be mounted
+        setTimeout(initChart, 100)
+      }
+    }
+
+    // Watch for dark mode changes to update chart text color
     onMounted(() => {
-      loadDashboardData()
+      loadData()
+      
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class') {
+            initChart()
+          }
+        })
+      })
+      
+      observer.observe(document.documentElement, {
+        attributes: true
+      })
+    })
+
+    onUnmounted(() => {
+      if (chartInstance) {
+        chartInstance.destroy()
+      }
     })
 
     return {
@@ -415,7 +344,7 @@ export default {
       categoryChart,
       formatRupiah,
       formatTanggal,
-      loadDashboardData
+      formatTanggalPendek
     }
   }
 }
