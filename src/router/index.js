@@ -40,6 +40,18 @@ const routes = [
     props: true
   },
   {
+    path: '/pemasukan',
+    name: 'DaftarPemasukan',
+    component: () => import('../views/DaftarPemasukan.vue'),
+    meta: { title: 'Daftar Pemasukan - DN EXPENSE', requiresAuth: true }
+  },
+  {
+    path: '/pemasukan/tambah',
+    name: 'TambahPemasukan',
+    component: () => import('../views/TambahPemasukan.vue'),
+    meta: { title: 'Tambah Pemasukan - DN EXPENSE', requiresAuth: true }
+  },
+  {
     path: '/laporan',
     name: 'Laporan',
     component: () => import('../views/Laporan.vue'),

@@ -1,6 +1,5 @@
-﻿<template>
+<template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
-    <!-- Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-zinc-50">Dashboard</h1>
@@ -12,7 +11,6 @@
       </router-link>
     </div>
 
-    <!-- Loading State -->
     <div v-if="loading" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div v-for="i in 4" :key="i" class="card p-5 space-y-3">
@@ -22,15 +20,12 @@
       </div>
     </div>
 
-    <!-- Content -->
     <div v-else class="space-y-6">
-      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        
         <div class="card p-5 relative overflow-hidden group">
           <div class="flex items-start justify-between relative z-10">
             <div>
-              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Bulan Ini</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Pengeluaran Bulan Ini</p>
               <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
                 {{ formatRupiah(ringkasan.total_bulan_ini) }}
               </p>
@@ -44,13 +39,27 @@
         <div class="card p-5 relative overflow-hidden group">
           <div class="flex items-start justify-between relative z-10">
             <div>
-              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Tahun Ini</p>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Pemasukan Bulan Ini</p>
               <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
-                {{ formatRupiah(ringkasan.total_tahun_ini) }}
+                {{ formatRupiah(ringkasan.total_pemasukan_bulan_ini) }}
               </p>
             </div>
             <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
-              <ChartBarIcon class="w-5 h-5 text-slate-600 dark:text-zinc-300" />
+              <ArrowTrendingUpIcon class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-5 relative overflow-hidden group">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Saldo Bersih</p>
+              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
+                {{ formatRupiah(ringkasan.saldo_bersih) }}
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
+              <CalculatorIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
         </div>
@@ -68,25 +77,9 @@
             </div>
           </div>
         </div>
-
-        <div class="card p-5 relative overflow-hidden group">
-          <div class="flex items-start justify-between relative z-10">
-            <div>
-              <p class="text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Rata-rata Harian</p>
-              <p class="text-2xl font-semibold text-slate-900 dark:text-zinc-50 text-money">
-                {{ formatRupiah(ringkasan.rata_rata_per_hari) }}
-              </p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center">
-              <CalculatorIcon class="w-5 h-5 text-slate-600 dark:text-zinc-300" />
-            </div>
-          </div>
-        </div>
       </div>
 
-      <!-- Main Layout -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Pengeluaran per Kategori -->
         <div class="card lg:col-span-2 flex flex-col">
           <div class="card-header border-b border-slate-100 dark:border-zinc-800/50 p-5">
             <h2 class="text-sm font-semibold text-slate-900 dark:text-zinc-100">Sebaran Kategori</h2>
@@ -104,7 +97,6 @@
           </div>
         </div>
 
-        <!-- Transaksi Terbaru -->
         <div class="card flex flex-col">
           <div class="card-header border-b border-slate-100 dark:border-zinc-800/50 p-5 flex items-center justify-between">
             <h2 class="text-sm font-semibold text-slate-900 dark:text-zinc-100">Baru-baru Ini</h2>
@@ -133,7 +125,7 @@
               </div>
             </div>
             <div v-else class="text-center py-10 px-4">
-               <p class="text-sm text-slate-500 dark:text-zinc-400">Belum ada transaksi bulan ini.</p>
+              <p class="text-sm text-slate-500 dark:text-zinc-400">Belum ada transaksi bulan ini.</p>
             </div>
           </div>
         </div>
@@ -143,7 +135,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, inject, watch } from 'vue'
+import { ref, onMounted, onUnmounted, inject } from 'vue'
 import { pengeluaranService } from '@/services/api'
 import { format, parseISO } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -154,7 +146,8 @@ import {
   DocumentTextIcon,
   CalculatorIcon,
   TagIcon,
-  PlusIcon
+  PlusIcon,
+  ArrowTrendingUpIcon
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -165,7 +158,8 @@ export default {
     DocumentTextIcon,
     CalculatorIcon,
     TagIcon,
-    PlusIcon
+    PlusIcon,
+    ArrowTrendingUpIcon
   },
   setup() {
     const toast = inject('toast')
@@ -177,6 +171,8 @@ export default {
     const ringkasan = ref({
       total_bulan_ini: 0,
       total_tahun_ini: 0,
+      total_pemasukan_bulan_ini: 0,
+      saldo_bersih: 0,
       jumlah_transaksi_bulan_ini: 0,
       rata_rata_per_hari: 0,
       ringkasan_kategori: []
@@ -210,10 +206,8 @@ export default {
 
       const ctx = categoryChart.value.getContext('2d')
       const data = ringkasan.value.ringkasan_kategori
-
-      // check if dark mode
       const isDark = document.documentElement.classList.contains('dark')
-      const textColor = isDark ? '#a1a1aa' : '#64748b' // zinc-400 or slate-500
+      const textColor = isDark ? '#a1a1aa' : '#64748b'
 
       chartInstance = new Chart(ctx, {
         type: 'doughnut',
@@ -244,7 +238,7 @@ export default {
               }
             },
             tooltip: {
-              backgroundColor: isDark ? '#18181b' : '#ffffff', // zinc-900 or white
+              backgroundColor: isDark ? '#18181b' : '#ffffff',
               titleColor: isDark ? '#f4f4f5' : '#0f172a',
               bodyColor: isDark ? '#a1a1aa' : '#475569',
               borderColor: isDark ? '#27272a' : '#e2e8f0',
@@ -277,47 +271,43 @@ export default {
     const loadData = async () => {
       try {
         loading.value = true
-        
-        // Load ringkasan
-        const response = await pengeluaranService.dapatkanRingkasan()
-        
-        // Mapping data dari backend
+        const now = new Date()
+        const response = await pengeluaranService.dapatkanRingkasan({
+          bulan: now.getMonth() + 1,
+          tahun: now.getFullYear()
+        })
+
         if (response.data) {
-           ringkasan.value = {
-             total_bulan_ini: response.data.total_pengeluaran || 0,
-             total_tahun_ini: response.data.total_pengeluaran || 0, // Mock for now
-             jumlah_transaksi_bulan_ini: 0, 
-             rata_rata_per_hari: 0, 
-             ringkasan_kategori: response.data.ringkasan_kategori || []
-           }
+          ringkasan.value = {
+            total_bulan_ini: response.data.total_pengeluaran || 0,
+            total_tahun_ini: response.data.total_pengeluaran || 0,
+            total_pemasukan_bulan_ini: response.data.total_income || 0,
+            saldo_bersih: response.data.net_balance || 0,
+            jumlah_transaksi_bulan_ini: 0,
+            rata_rata_per_hari: 0,
+            ringkasan_kategori: response.data.ringkasan_kategori || []
+          }
         }
 
-        // Load transaksi terbaru
         const responseTransaksi = await pengeluaranService.dapatkanSemua({ limit: 5 })
         if (responseTransaksi.data) {
-           transaksiTerbaru.value = responseTransaksi.data.slice(0, 5)
-           
-           // Hitung statistik tambahan dari transaksi
-           ringkasan.value.jumlah_transaksi_bulan_ini = responseTransaksi.data.length
-           if (responseTransaksi.data.length > 0) {
-             ringkasan.value.rata_rata_per_hari = ringkasan.value.total_bulan_ini / 30 // Rough estimate
-           }
+          transaksiTerbaru.value = responseTransaksi.data.slice(0, 5)
+          ringkasan.value.jumlah_transaksi_bulan_ini = responseTransaksi.data.length
+          if (responseTransaksi.data.length > 0) {
+            ringkasan.value.rata_rata_per_hari = ringkasan.value.total_bulan_ini / 30
+          }
         }
-        
       } catch (error) {
         console.error('Error loading dashboard data:', error)
         toast.error('Gagal memuat data dashboard')
       } finally {
         loading.value = false
-        // Need to wait for next tick for canvas to be mounted
         setTimeout(initChart, 100)
       }
     }
 
-    // Watch for dark mode changes to update chart text color
     onMounted(() => {
       loadData()
-      
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (mutation.attributeName === 'class') {
@@ -325,7 +315,7 @@ export default {
           }
         })
       })
-      
+
       observer.observe(document.documentElement, {
         attributes: true
       })

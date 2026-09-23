@@ -47,7 +47,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div v-for="i in 3" :key="i" class="card dark:bg-gray-800">
           <div class="card-body">
             <div class="loading-shimmer h-16 rounded"></div>
@@ -78,6 +78,36 @@
               </div>
               <div class="w-12 h-12 bg-red-400 rounded-lg flex items-center justify-center">
                 <CurrencyDollarIcon class="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-emerald-100 text-sm font-medium">Total Pemasukan</p>
+                <p class="text-2xl font-bold text-money">{{ formatRupiah(summary.total_pemasukan) }}</p>
+                <p class="text-emerald-100 text-xs mt-1">{{ getPeriodText() }}</p>
+              </div>
+              <div class="w-12 h-12 bg-emerald-400 rounded-lg flex items-center justify-center">
+                <ArrowTrendingUpIcon class="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card dark:bg-gray-800">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Saldo Bersih</p>
+                <p class="text-2xl font-bold text-gray-900 dark:text-gray-100 text-money">{{ formatRupiah(summary.saldo_bersih) }}</p>
+                <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">Net cash flow</p>
+              </div>
+              <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center">
+                <CalculatorIcon class="w-6 h-6 text-sky-600 dark:text-sky-300" />
               </div>
             </div>
           </div>
@@ -247,6 +277,7 @@ import {
   DocumentTextIcon,
   DocumentArrowDownIcon,
   ArrowPathIcon,
+  ArrowTrendingUpIcon,
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -260,6 +291,7 @@ export default {
     DocumentTextIcon,
     DocumentArrowDownIcon,
     ArrowPathIcon,
+    ArrowTrendingUpIcon,
   },
   setup() {
     const toast = inject('toast')
@@ -272,6 +304,8 @@ export default {
     // Data
     const summary = ref({
       total_pengeluaran: 0,
+      total_pemasukan: 0,
+      saldo_bersih: 0,
       jumlah_transaksi: 0,
       rata_rata_transaksi: 0,
       kategori_terbanyak: null
@@ -357,6 +391,8 @@ export default {
 
         summary.value = {
           total_pengeluaran: data.total_pengeluaran || 0,
+          total_pemasukan: data.total_income || 0,
+          saldo_bersih: data.net_balance || 0,
           jumlah_transaksi: data.ringkasan_kategori?.reduce((sum, item) => sum + (item.jumlah_transaksi || 0), 0) || 0,
           rata_rata_transaksi: 0,
           kategori_terbanyak: null

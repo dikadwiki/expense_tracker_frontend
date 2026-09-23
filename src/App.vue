@@ -273,6 +273,7 @@ import {
   HomeIcon,
   CurrencyDollarIcon,
   ChartBarIcon,
+  ArrowTrendingUpIcon,
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -281,6 +282,7 @@ export default {
     HomeIcon,
     CurrencyDollarIcon,
     ChartBarIcon,
+    ArrowTrendingUpIcon,
   },
   setup() {
     const router = useRouter()
@@ -387,6 +389,11 @@ export default {
         name: 'Pengeluaran',
         path: '/pengeluaran',
         icon: 'CurrencyDollarIcon'
+      },
+      {
+        name: 'Pemasukan',
+        path: '/pemasukan',
+        icon: 'ArrowTrendingUpIcon'
       },
       {
         name: 'Laporan',

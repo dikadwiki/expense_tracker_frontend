@@ -279,7 +279,7 @@ export default {
       loadingKategori.value = true
       try {
         console.log('Loading kategori...')
-        const response = await kategoriService.dapatkanSemua()
+        const response = await kategoriService.dapatkanSemua({ type: 'expense' })
         console.log('Kategori response:', response)
         
         // Backend menggunakan 'sukses' dan 'data'
@@ -368,7 +368,8 @@ export default {
           jumlah: parseFloat(form.value.jumlah),
           kategori_id: form.value.kategori_id || null,
           tanggal_transaksi: form.value.tanggal_transaksi,
-          deskripsi: form.value.deskripsi.trim()
+          deskripsi: form.value.deskripsi.trim(),
+          jenis: 'expense'
         }
 
         await pengeluaranService.tambah(data)

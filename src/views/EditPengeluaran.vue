@@ -365,7 +365,7 @@ export default {
 
     const loadKategori = async () => {
       try {
-        const response = await kategoriService.dapatkanSemua()
+        const response = await kategoriService.dapatkanSemua({ type: 'expense' })
         daftarKategori.value = response.data || []
       } catch (error) {
         console.error('Error loading kategori:', error)
@@ -428,7 +428,8 @@ export default {
           jumlah: parseFloat(form.value.jumlah),
           kategori_id: form.value.kategori_id || null,
           tanggal_transaksi: form.value.tanggal_transaksi,
-          deskripsi: form.value.deskripsi.trim()
+          deskripsi: form.value.deskripsi.trim(),
+          jenis: 'expense'
         }
 
         await pengeluaranService.perbarui(props.id, data)

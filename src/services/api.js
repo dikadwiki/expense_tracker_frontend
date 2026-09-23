@@ -102,11 +102,34 @@ export const pengeluaranService = {
   },
 }
 
+export const pemasukanService = {
+  async dapatkanSemua(params = {}) {
+    const response = await apiClient.get('/pemasukan', { params })
+    return response.data
+  },
+  async dapatkanBerdasarkanId(id) {
+    const response = await apiClient.get(`/pemasukan/${id}`)
+    return response.data
+  },
+  async tambah(data) {
+    const response = await apiClient.post('/pemasukan', data)
+    return response.data
+  },
+  async perbarui(id, data) {
+    const response = await apiClient.put(`/pemasukan/${id}`, data)
+    return response.data
+  },
+  async hapus(id) {
+    const response = await apiClient.delete(`/pemasukan/${id}`)
+    return response.data
+  },
+}
+
 // Service untuk Kategori
 export const kategoriService = {
   // Dapatkan semua kategori
-  async dapatkanSemua() {
-    const response = await apiClient.get('/kategori')
+  async dapatkanSemua(params = {}) {
+    const response = await apiClient.get('/kategori', { params })
     return response.data
   },
 
