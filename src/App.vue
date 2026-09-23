@@ -265,7 +265,7 @@
 <script>
 import { ref, computed, provide, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useDarkMode } from '@/composables/useDarkMode'
+import { useDarkMode } from '@/composables/useDarkmode'
 import { authService } from '@/services/api'
 
 // Import icons dari Heroicons
